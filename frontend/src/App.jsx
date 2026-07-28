@@ -3,8 +3,11 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import ProtectedRoute from './routes/ProtectedRoute';
 import Login from './pages/Login';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import ManageStudents from './pages/admin/ManageStudents';
+import ManageStaff from './pages/admin/ManageStaff';
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
 import ParentDashboard from './pages/parent/ParentDashboard';
+import StudentDashboard from './pages/student/StudentDashboard';
 
 // Sends a logged-in user to their own dashboard, or to login if not authenticated
 const RoleRedirect = () => {
@@ -28,6 +31,22 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/admin/students"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <ManageStudents />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/staff"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <ManageStaff />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="/teacher"
@@ -43,6 +62,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['parent']}>
                 <ParentDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/student"
+            element={
+              <ProtectedRoute allowedRoles={['student']}>
+                <StudentDashboard />
               </ProtectedRoute>
             }
           />
