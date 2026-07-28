@@ -12,6 +12,9 @@ const adminNavLinks = [
   { to: '/admin', label: 'Dashboard' },
   { to: '/admin/students', label: 'Students' },
   { to: '/admin/staff', label: 'Staff & Parents' },
+  { to: '/admin/timetable', label: 'Timetable' },
+  { to: '/admin/attendance', label: 'Attendance' },
+  { to: '/admin/exams', label: 'Exams' },
 ];
 
 const DashboardLayout = ({ title, children }) => {

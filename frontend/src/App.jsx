@@ -5,6 +5,9 @@ import Login from './pages/Login';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import ManageStudents from './pages/admin/ManageStudents';
 import ManageStaff from './pages/admin/ManageStaff';
+import ManageTimetable from './pages/admin/ManageTimetable';
+import ManageAttendance from './pages/admin/ManageAttendance';
+import ManageExams from './pages/admin/ManageExams';
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
 import ParentDashboard from './pages/parent/ParentDashboard';
 import StudentDashboard from './pages/student/StudentDashboard';
@@ -44,6 +47,30 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <ManageStaff />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/timetable"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <ManageTimetable />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/attendance"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <ManageAttendance />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/exams"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <ManageExams />
               </ProtectedRoute>
             }
           />
