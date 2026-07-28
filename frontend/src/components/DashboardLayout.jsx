@@ -1,15 +1,23 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const roleLabels = {
   admin: 'Administrator',
   teacher: 'Teacher',
   parent: 'Parent',
+  student: 'Student',
 };
+
+const adminNavLinks = [
+  { to: '/admin', label: 'Dashboard' },
+  { to: '/admin/students', label: 'Students' },
+  { to: '/admin/staff', label: 'Staff & Parents' },
+];
 
 const DashboardLayout = ({ title, children }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
@@ -37,6 +45,23 @@ const DashboardLayout = ({ title, children }) => {
             </button>
           </div>
         </div>
+        {user?.role === 'admin' && (
+          <div className="max-w-6xl mx-auto px-6 flex gap-1 border-t border-white/10">
+            {adminNavLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`text-sm px-3 py-2 border-b-2 transition-colors ${
+                  location.pathname === link.to
+                    ? 'border-white text-white'
+                    : 'border-transparent text-slate-300 hover:text-white'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        )}
       </header>
       <main className="max-w-6xl mx-auto px-6 py-8">{children}</main>
     </div>
