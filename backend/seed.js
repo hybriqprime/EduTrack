@@ -9,6 +9,7 @@ const Student = require('./models/Student');
 const Result = require('./models/Result');
 const Fee = require('./models/Fee');
 
+
 const SESSION = '2025/2026';
 const TERM = 'Second Term';
 
