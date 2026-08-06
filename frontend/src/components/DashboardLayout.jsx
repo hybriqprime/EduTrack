@@ -1,5 +1,6 @@
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Footer from './Footer';
 
 const roleLabels = {
   admin: 'Administrator',
@@ -28,7 +29,7 @@ const DashboardLayout = ({ title, children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 flex flex-col">
       <header className="bg-[#1e3a5f] text-white">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div>
@@ -66,7 +67,8 @@ const DashboardLayout = ({ title, children }) => {
           </div>
         )}
       </header>
-      <main className="max-w-6xl mx-auto px-6 py-8">{children}</main>
+      <main className="max-w-6xl mx-auto px-6 py-8 flex-1 w-full">{children}</main>
+      <Footer />
     </div>
   );
 };
