@@ -41,6 +41,12 @@ const DashboardLayout = ({ title, children }) => {
               <div className="text-sm font-medium">{user?.name}</div>
               <div className="text-xs text-slate-300">{roleLabels[user?.role]}</div>
             </div>
+            <Link
+              to="/account"
+              className="text-sm bg-white/10 hover:bg-white/20 rounded-lg px-3 py-1.5 transition-colors"
+            >
+              Account
+            </Link>
             <button
               onClick={handleLogout}
               className="text-sm bg-white/10 hover:bg-white/20 rounded-lg px-3 py-1.5 transition-colors"

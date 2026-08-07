@@ -11,6 +11,7 @@ import ManageExams from './pages/admin/ManageExams';
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
 import ParentDashboard from './pages/parent/ParentDashboard';
 import StudentDashboard from './pages/student/StudentDashboard';
+import AccountSettings from './pages/AccountSettings';
 
 // Sends a logged-in user to their own dashboard, or to login if not authenticated
 const RoleRedirect = () => {
@@ -101,6 +102,15 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+  path="/account"
+  element={
+    <ProtectedRoute>
+      <AccountSettings />
+    </ProtectedRoute>
+  }
+/>
 
           <Route path="/" element={<RoleRedirect />} />
           <Route path="*" element={<RoleRedirect />} />
