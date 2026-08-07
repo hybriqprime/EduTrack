@@ -51,6 +51,10 @@ router.get('/student/:studentId', protect, async (req, res) => {
       return res.status(403).json({ message: 'Not authorized to view this result' });
     }
 
+    if (req.user.role === 'student' && String(req.user.studentProfile) !== String(student._id)) {
+      return res.status(403).json({ message: 'Not authorized to view this result' });
+    }
+
     const results = await Result.find({ student: req.params.studentId }).sort({ createdAt: -1 });
     res.json(results);
   } catch (err) {
@@ -67,6 +71,13 @@ router.get('/:id/pdf', protect, async (req, res) => {
     if (
       req.user.role === 'parent' &&
       String(result.student.parent) !== String(req.user._id)
+    ) {
+      return res.status(403).json({ message: 'Not authorized to view this result' });
+    }
+
+    if (
+      req.user.role === 'student' &&
+      String(req.user.studentProfile) !== String(result.student._id)
     ) {
       return res.status(403).json({ message: 'Not authorized to view this result' });
     }

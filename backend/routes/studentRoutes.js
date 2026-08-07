@@ -1,5 +1,6 @@
 const express = require('express');
 const Student = require('../models/Student');
+const User = require('../models/User');
 const { protect, authorize } = require('../middleware/auth');
 
 const router = express.Router();
@@ -35,6 +36,17 @@ router.get('/my-children', protect, authorize('parent'), async (req, res) => {
   }
 });
 
+// @route GET /api/students/my-profile  (student — their own record)
+router.get('/my-profile', protect, authorize('student'), async (req, res) => {
+  try {
+    const student = await Student.findById(req.user.studentProfile);
+    if (!student) return res.status(404).json({ message: 'Student profile not linked' });
+    res.json(student);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // @route GET /api/students/:id
 router.get('/:id', protect, async (req, res) => {
   try {
@@ -43,6 +55,11 @@ router.get('/:id', protect, async (req, res) => {
 
     // Parents can only view their own child
     if (req.user.role === 'parent' && String(student.parent) !== String(req.user._id)) {
+      return res.status(403).json({ message: 'Not authorized to view this student' });
+    }
+
+    // Students can only view their own profile
+    if (req.user.role === 'student' && String(req.user.studentProfile) !== String(student._id)) {
       return res.status(403).json({ message: 'Not authorized to view this student' });
     }
 
@@ -69,6 +86,43 @@ router.delete('/:id', protect, authorize('admin'), async (req, res) => {
     const student = await Student.findByIdAndDelete(req.params.id);
     if (!student) return res.status(404).json({ message: 'Student not found' });
     res.json({ message: 'Student removed' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// @route POST /api/students/:id/create-login  (admin only)
+// Creates a login account for an existing student, linked via studentProfile
+router.post('/:id/create-login', protect, authorize('admin'), async (req, res) => {
+  try {
+    const student = await Student.findById(req.params.id);
+    if (!student) return res.status(404).json({ message: 'Student not found' });
+
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
+
+    const existing = await User.findOne({ email });
+    if (existing) {
+      return res.status(400).json({ message: 'Email already registered' });
+    }
+
+    const user = await User.create({
+      name: `${student.firstName} ${student.lastName}`,
+      email,
+      password,
+      role: 'student',
+      studentProfile: student._id,
+    });
+
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      studentProfile: user.studentProfile,
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

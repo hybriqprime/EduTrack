@@ -7,6 +7,9 @@ const authRoutes = require('./routes/authRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const resultRoutes = require('./routes/resultRoutes');
 const feeRoutes = require('./routes/feeRoutes');
+const timetableRoutes = require('./routes/timetableRoutes');
+const attendanceRoutes = require('./routes/attendanceRoutes');
+const examRoutes = require('./routes/examRoutes');
 
 const app = express();
 
@@ -23,6 +26,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/results', resultRoutes);
 app.use('/api/fees', feeRoutes);
+app.use('/api/timetable', timetableRoutes);
+app.use('/api/attendance', attendanceRoutes);
+app.use('/api/exams', examRoutes);
 
 // Fallback error handler
 app.use((err, req, res, next) => {

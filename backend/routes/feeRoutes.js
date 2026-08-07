@@ -59,6 +59,10 @@ router.get('/student/:studentId', protect, async (req, res) => {
       return res.status(403).json({ message: 'Not authorized to view this record' });
     }
 
+    if (req.user.role === 'student' && String(req.user.studentProfile) !== String(student._id)) {
+      return res.status(403).json({ message: 'Not authorized to view this record' });
+    }
+
     const fees = await Fee.find({ student: req.params.studentId }).sort({ createdAt: -1 });
     res.json(fees);
   } catch (err) {
